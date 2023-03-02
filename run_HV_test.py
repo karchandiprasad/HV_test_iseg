@@ -7,6 +7,11 @@ import io
 import serial, time
 import sys
 import csv
+import numpy
+import numpy as np
+import matplotlib
+import matplotlib.pyplot as plt
+
 from optparse import OptionParser
 import serial.tools.list_ports as port_list
 
@@ -102,6 +107,12 @@ starting_Kill='T1=1'
 ser.write((starting_Kill+eol_char).encode('utf-8'))
 time.sleep(0.2)
 
+fig = plt.figure()
+ax = fig.add_subplot(1, 1, 1)
+xs = []
+ys = []
+
+
 for incre in range(V_b, V_e+V_step, V_step):
     mindata=[]    
     print("Voltage:"+str(incre)+"\n")    
@@ -114,27 +125,49 @@ for incre in range(V_b, V_e+V_step, V_step):
     ser.write(("U1"+eol_char).encode('utf-8'))
     time.sleep(0.2)
     ans_v=sio.read()
+    ansv=ans_v[ans_v.find(eol_char)+len(eol_char):ans_v.rfind(eol_char)]
     sys.stdout.write('Measured Voltage:'+str(ans_v))
+    if ansv==0:
+        break
     ### Measure current after volatage setting
     ser.write(("I1"+eol_char).encode('utf-8'))
     time.sleep(0.2)
     ans_i=sio.read()
     sys.stdout.write('Measured Current:'+str(ans_i))
-
+    ansi=ans_i[ans_i.find(eol_char)+len(eol_char):ans_i.rfind(eol_char)]
     #mindata.append(str(incre))
     #mindata.append(str(ans))
-    mindata.append(str(ans_v))
-    mindata.append(str(ans_i))
+ 
+    xs.append(ansv)
+    ys.append(ansi)
+    ax.scatter(xs, ys, color="black")
+    plt.xticks(rotation=45, ha='right')
+    plt.subplots_adjust(bottom=0.30)
+    plt.title('Voltage Vs Current curve')
+    plt.xlabel('Voltage (kV)')
+    plt.ylabel('Current (mA)') 
+    plt.pause(0.2)
+    plt.draw() 
+    mindata.append(str(ansv))
+    mindata.append(str(ansi))
     
     finaloutput.append(mindata)
     
 
 print('\nDone\n')
 
-with open(options.filename, 'w') as f:
+
+current_datetime = datetime.now()
+date = datetime.now().strftime('%Y%m%d')
+time = datetime.now().strftime('-%H-%M-%S')
+filenames="HV_text-"+date+time+".txt"
+
+with open(filenames, 'w') as f:
     csv.writer(f, delimiter=' ').writerows(finaloutput)
 
 ser.close()  
 
+while True:
+    time.sleep(1)
 
 
