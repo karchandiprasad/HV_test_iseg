@@ -4,11 +4,11 @@
 
 #!/usr/bin/python
 import io
-#import serial, time
+import serial, time
 import sys
 import csv
 from optparse import OptionParser
-#import serial.tools.list_ports as port_list
+import serial.tools.list_ports as port_list
 
 
 usage = ("Usage: %prog --filename name --voltage_in Incre --start_volt IVolt --end_volt EVolt"
@@ -55,10 +55,6 @@ ports = list(port_list.comports())
 for p in ports:
     print (p)
 
-# #possible timeout values:
-# #    1. None: wait forever, block call
-# #    2. 0: non-blocking mode, return immediately
-# #    3. x, x is bigger than 0, float allowed, timeout block call
 
 ser = serial.Serial()
 ser.port = "COM6"
@@ -134,37 +130,3 @@ ser.close()
 
 
 
-
-
-    
-
-#    try:
-#        ser.flushInput() #flush input buffer, discarding all its contents
-#        ser.flushOutput()#flush output buffer, aborting current output 
-                 #and discard all that is in buffer
-
-#        #write data
-#        ser.write("AT+CSQ")
-#        print("write data: AT+CSQ")
-
-#        time.sleep(0.5)  #give the serial port sometime to receive the data
-
-#        numOfLines = 0
-
-#        while True:
-#          response = ser.readline()
-#          print("read data: " + response)
-
-#          numOfLines = numOfLines + 1
-
-#          if(numOfLines >= 5):
-#            break
-
-#        ser.close()
-#    #except (Exception, e1):
-#    except (Exception):
-#        #print("error communicating...: " + str(e1))
-#        print("error communicating...: ")
-
-#else:
-#    print("cannot open serial port ")
