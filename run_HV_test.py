@@ -115,17 +115,21 @@ for incre in range(V_b, V_e+V_step, V_step):
     time.sleep(0.2)
     ans_v=sio.read()
     sys.stdout.write('Measured Voltage:'+str(ans_v))
-    ### Measure current after volatage setting
+    ansv=ans_v[ans_v.find(eol_char)+len(eol_char):ans_v.rfind(eol_char)]
+    if ansv==0:
+        break
+    ### Measure current after volatage settinn
     ser.write(("I1"+eol_char).encode('utf-8'))
     time.sleep(0.2)
     ans_i=sio.read()
-    sys.stdout.write('Measured Current:'+str(ans_i))
-
+    ansi=ans_i[ans_i.find(eol_char)+len(eol_char):ans_i.rfind(eol_char)]
+    sys.stdout.write('Measured Current:'+str(ansi))
+       
     #mindata.append(str(incre))
     #mindata.append(str(ans))
-    mindata.append(str(ans_v))
-    mindata.append(str(ans_i))
-    
+    mindata.append(str(ansv))
+    mindata.append(str(ansi))
+    print(mindata)
     finaloutput.append(mindata)
     
 
@@ -135,6 +139,3 @@ with open(options.filename, 'w') as f:
     csv.writer(f, delimiter=' ').writerows(finaloutput)
 
 ser.close()  
-
-
-
