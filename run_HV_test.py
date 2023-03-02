@@ -127,6 +127,7 @@ for incre in range(V_b, V_e+V_step, V_step):
     ans_v=sio.read()
     ansv=ans_v[ans_v.find(eol_char)+len(eol_char):ans_v.rfind(eol_char)]
     sys.stdout.write('Measured Voltage:'+str(ans_v))
+
     if ansv==0:
         break
     ### Measure current after volatage setting
@@ -150,7 +151,7 @@ for incre in range(V_b, V_e+V_step, V_step):
     plt.draw() 
     mindata.append(str(ansv))
     mindata.append(str(ansi))
-    
+   
     finaloutput.append(mindata)
     
 
@@ -169,5 +170,4 @@ ser.close()
 
 while True:
     time.sleep(1)
-
 
