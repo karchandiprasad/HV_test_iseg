@@ -44,50 +44,11 @@ else:
 
 
 while True:
-  #ser.flushInput() 
-  #ser.flushOutput()
   sending = input("type:\n")
   ser.write((sending+eol_char).encode('utf-8'))
   time.sleep(0.2)
   ans=sio.read()
   sys.stdout.write('recieved:'+str(ans))
   print('\nsucessed try new command\n')
-  #ser.write(str.encode("*IDN?"))
   #ser.close()
 
-
-
-
-
-    
-
-#    try:
-#        ser.flushInput() #flush input buffer, discarding all its contents
-#        ser.flushOutput()#flush output buffer, aborting current output 
-                 #and discard all that is in buffer
-
-#        #write data
-#        ser.write("AT+CSQ")
-#        print("write data: AT+CSQ")
-
-#        time.sleep(0.5)  #give the serial port sometime to receive the data
-
-#        numOfLines = 0
-
-#        while True:
-#          response = ser.readline()
-#          print("read data: " + response)
-
-#          numOfLines = numOfLines + 1
-
-#          if(numOfLines >= 5):
-#            break
-
-#        ser.close()
-#    #except (Exception, e1):
-#    except (Exception):
-#        #print("error communicating...: " + str(e1))
-#        print("error communicating...: ")
-
-#else:
-#    print("cannot open serial port ")
